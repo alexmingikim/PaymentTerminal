@@ -3,6 +3,7 @@ package nz.ac.auckland.se281.a2;
 import java.util.ArrayList;
 
 import nz.ac.auckland.se281.a2.cli.Menu.SIZE;
+import nz.ac.auckland.se281.a2.cli.MessagesCLI;
 
 public class BurgerShop {
 
@@ -63,29 +64,41 @@ public class BurgerShop {
 	 *
 	 */
 	public void showCart() {
-		int counter = 0;
+		int count = 0;
 		float total = 0;
 
 		for (Item item : cart) {
 			// Snack - need to show size
 			if (item.getClass() == Snack.class) {
 				Snack snack = (Snack) item;
-				System.out.println(counter + " - " + item.getName() + " (" + snack.getSize() + ")" + ": $"
+				System.out.println(count + " - " + item.getName() + " (" + snack.getSize() + ")" + ": $"
 						+ String.format("%.02f", item.getPrice()));
 				// Drink - need to show size
 			} else if (item.getClass() == Drink.class) {
 				Drink drink = (Drink) item;
-				System.out.println(counter + " - " + item.getName() + " (" + drink.getSize() + ")" + ": $"
+				System.out.println(count + " - " + item.getName() + " (" + drink.getSize() + ")" + ": $"
 						+ String.format("%.02f", item.getPrice()));
 				// Burger
 			} else {
-				System.out.println(counter + " - " + item.getName() + ": $" + String.format("%.02f", item.getPrice()));
+				System.out.println(count + " - " + item.getName() + ": $" + String.format("%.02f", item.getPrice()));
 			}
-			counter++;
+			count++;
 			total += item.getPrice();
 		}
 
-		System.out.println("Total: $" + String.format("%.02f", total));
+		// Empty cart
+		if (count == 0) {
+			MessagesCLI.CART_EMPTY.printMessage();
+		}
+
+		// Display total
+		if (total >= 100) {
+			MessagesCLI.DISCOUNT.printMessage();
+			total = (float) (total * 0.75);
+			System.out.println("Total: $" + String.format("%.02f", total));
+		} else {
+			System.out.println("Total: $" + String.format("%.02f", total));
+		}
 
 	}
 
