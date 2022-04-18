@@ -34,7 +34,8 @@ public class BurgerShop {
 	 * @param size
 	 */
 	public void addSnack(String name, float price, SIZE size) {
-		// TODO TASK1
+		Snack snack = new Snack(name, price, size);
+		cart.add(snack);
 	}
 
 	/**
@@ -61,12 +62,22 @@ public class BurgerShop {
 	 *
 	 */
 	public void showCart() {
+		int counter = 0;
+		float total = 0;
 
 		for (Item item : cart) {
-			int counter = 0;
-			System.out.println(counter + " - " + item.getName() + ": $" + String.format("%.02f", item.getPrice()));
+			if (item.getClass() == Snack.class) {
+				Snack snack = (Snack) item;
+				System.out.println(counter + " - " + item.getName() + " (" + snack.getSize() + ")" + ": $"
+						+ String.format("%.02f", item.getPrice()));
+			} else {
+				System.out.println(counter + " - " + item.getName() + ": $" + String.format("%.02f", item.getPrice()));
+			}
 			counter++;
+			total += item.getPrice();
 		}
+
+		System.out.println("Total: $" + String.format("%.02f", total));
 
 	}
 

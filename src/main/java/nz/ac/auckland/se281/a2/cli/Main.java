@@ -232,7 +232,6 @@ public class Main {
 				return true;
 			}
 			if (menu.isMeal(num)) {
-
 				restaurant.addBurger(menu.getItemName(num), menu.getItemPrice(num));
 			} else if (menu.isSnack(num)) {
 				restaurant.addSnack(menu.getItemName(num), menu.getItemPrice(num), getSizeFromUser());
