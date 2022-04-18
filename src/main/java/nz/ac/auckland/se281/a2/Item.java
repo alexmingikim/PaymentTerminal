@@ -3,7 +3,7 @@ package nz.ac.auckland.se281.a2;
 public abstract class Item {
 
 	private String name;
-	private float price;
+	protected float price;
 
 	public Item(String name, float price) {
 		this.name = name;
