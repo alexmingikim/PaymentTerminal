@@ -1,9 +1,12 @@
 package nz.ac.auckland.se281.a2;
 
+import java.util.ArrayList;
+
 import nz.ac.auckland.se281.a2.cli.Menu.SIZE;
-import nz.ac.auckland.se281.a2.cli.MessagesCLI;
 
 public class BurgerShop {
+
+	ArrayList<Item> cart = new ArrayList<Item>();
 
 	public BurgerShop() {
 
@@ -16,7 +19,8 @@ public class BurgerShop {
 	 * @param price
 	 */
 	public void addBurger(String name, float price) {
-		// TODO TASK1
+		Burger burger = new Burger(name, price);
+		cart.add(burger);
 	}
 
 	/**
@@ -57,7 +61,13 @@ public class BurgerShop {
 	 *
 	 */
 	public void showCart() {
-		// TODO TASK1
+
+		for (Item item : cart) {
+			int counter = 0;
+			System.out.println(counter + " - " + item.getName() + ": $" + String.format("%.02f", item.getPrice()));
+			counter++;
+		}
+
 	}
 
 	/**
