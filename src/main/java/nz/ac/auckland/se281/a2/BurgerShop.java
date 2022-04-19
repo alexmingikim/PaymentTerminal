@@ -7,7 +7,7 @@ import nz.ac.auckland.se281.a2.cli.MessagesCLI;
 
 public class BurgerShop {
 
-	ArrayList<Item> cart = new ArrayList<Item>();
+	ArrayList<Object> cart = new ArrayList<Object>();
 
 	public BurgerShop() {
 
@@ -67,23 +67,44 @@ public class BurgerShop {
 		int count = 0;
 		float total = 0;
 
-		for (Item item : cart) {
-			// Snack - need to show size
-			if (item.getClass() == Snack.class) {
-				Snack snack = (Snack) item;
-				System.out.println(count + " - " + item.getName() + " (" + snack.getSize() + ")" + ": $"
-						+ String.format("%.02f", item.getPrice()));
-				// Drink - need to show size
-			} else if (item.getClass() == Drink.class) {
-				Drink drink = (Drink) item;
-				System.out.println(count + " - " + item.getName() + " (" + drink.getSize() + ")" + ": $"
-						+ String.format("%.02f", item.getPrice()));
-				// Burger
+		for (Object object : cart) {
+			// Show Snack
+			if (object.getClass() == Snack.class) {
+				Snack snack = (Snack) object;
+				System.out.println(count + " - " + snack.getName() + " (" + snack.getSize() + ")" + ": $"
+						+ String.format("%.02f", snack.getPrice()));
+			}
+			// Show Drink
+			else if (object.getClass() == Drink.class) {
+				Drink drink = (Drink) object;
+				System.out.println(count + " - " + drink.getName() + " (" + drink.getSize() + ")" + ": $"
+						+ String.format("%.02f", drink.getPrice()));
+			}
+			// Show Burger
+			else if (object.getClass() == Burger.class) {
+				Burger burger = (Burger) object;
+				System.out
+						.println(count + " - " + burger.getName() + ": $" + String.format("%.02f", burger.getPrice()));
+			}
+			// Show Combo
+			else if (object.getClass() == Combo.class) {
+				Combo combo = (Combo) object;
+				System.out.println(count + " - COMBO : (" + combo.getNameBurger() + ", " + combo.getNameSnack() + " ("
+						+ combo.getSize() + "), " + combo.getNameDrink() + " (" + combo.getSize() + ")): $"
+						+ String.format("%.02f", combo.getComboPrice()));
 			} else {
-				System.out.println(count + " - " + item.getName() + ": $" + String.format("%.02f", item.getPrice()));
+				System.out.println("Error!");
 			}
 			count++;
-			total += item.getPrice();
+
+			// Calculate total price
+			if (object instanceof Item) {
+				Item item = (Item) object;
+				total += item.getPrice();
+			} else if (object.getClass() == Combo.class) {
+				Combo combo = (Combo) object;
+				total += combo.getComboPrice();
+			}
 		}
 
 		// Empty cart
@@ -93,6 +114,7 @@ public class BurgerShop {
 
 		// Display total
 		if (total >= 100) {
+			// Apply discount
 			MessagesCLI.DISCOUNT.printMessage();
 			total = (float) (total * 0.75);
 			System.out.println("Total: $" + String.format("%.02f", total));
@@ -119,7 +141,8 @@ public class BurgerShop {
 	 */
 	public void addCombo(String nameBurger, float priceBurger, String nameSnack, float priceSnack, String nameDrink,
 			float priceDrink, SIZE size) {
-		// TODO TASK2
+		Combo combo = new Combo(nameBurger, priceBurger, nameSnack, priceSnack, nameDrink, priceDrink, size);
+		cart.add(combo);
 	}
 
 	/**

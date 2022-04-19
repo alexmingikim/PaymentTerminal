@@ -4,23 +4,28 @@ import nz.ac.auckland.se281.a2.cli.Menu;
 
 public class Drink extends Item {
 
+	// Instance fields
 	private Menu.SIZE size;
 
+	// Constructor
 	public Drink(String name, float price, Menu.SIZE size) {
 		super(name, price);
 		this.size = size;
 
-		// Increase price for greater size
+		// Set price according to size
 		switch (size) {
 		case L:
 			this.price += 3;
+			break;
 		case XL:
 			this.price += 4;
+			break;
 		default:
 
 		}
 	}
 
+	// Getters
 	public String getSize() {
 		switch (size) {
 		case M:
