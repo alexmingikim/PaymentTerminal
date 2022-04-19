@@ -154,14 +154,23 @@ public class BurgerShop {
 	 * @param posCart
 	 */
 	public void removeItem(int posCart) {
-		// TODO TASK3
+
+		// Remove ith element
+		if (posCart >= 0 && posCart < cart.size()) {
+			cart.remove(posCart);
+		}
+		// Provided position is not valid
+		else {
+			MessagesCLI.NOT_VALID_CART_POSITION.printMessage();
+		}
+
 	}
 
 	/**
 	 * removes all elements in the cart
 	 */
 	public void clearCart() {
-		// TODO TASK3
+		cart.removeAll(cart);
 	}
 
 	/**
