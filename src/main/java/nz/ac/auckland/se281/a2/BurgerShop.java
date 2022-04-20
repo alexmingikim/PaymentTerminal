@@ -198,6 +198,7 @@ public class BurgerShop {
 						// Determine if size of snack and drink are same
 						if (snack.getSize() == drink.getSize()) {
 							MessagesCLI.MISSED_COMBO.printMessage();
+							return;
 						}
 					}
 				}
@@ -205,6 +206,7 @@ public class BurgerShop {
 		}
 
 		// Confirm order, empty cart and print estimated waiting time
+		int waitingTimeHours = 0;
 		int waitingTimeMins = 0;
 		int waitingTimeSecs = 0;
 		int numOfBurger = 0;
@@ -261,14 +263,22 @@ public class BurgerShop {
 					waitingTimeSecs += 15;
 				}
 			}
-			// Total waiting time in minutes and seconds
-			waitingTimeMins = waitingTimeSecs / 60;
-			waitingTimeSecs = waitingTimeSecs % 60;
-
-			// Show cart
-			showCart();
-
 		}
+		// Total waiting time in minutes and seconds
+		// code adapted from https://stackoverflow.com/a/6118983
+		waitingTimeHours = waitingTimeSecs / 3600;
+		waitingTimeMins = (waitingTimeSecs % 3600) / 60;
+		waitingTimeSecs = waitingTimeSecs % 60;
+
+		// Show cart
+		showCart();
+
+		// Print waiting time
+		System.out.println(MessagesCLI.ESTIMATE_WAITING_TIME.getMessage() + waitingTimeHours + " hours "
+				+ waitingTimeMins + " minutes " + waitingTimeSecs + " seconds");
+
+		// Clear cart
+		clearCart();
 
 	}
 
