@@ -190,10 +190,12 @@ public class BurgerShop {
 		for (Object item1 : cart) {
 			for (Object item2 : cart) {
 				for (Object item3 : cart) {
+					// Determine if cart contains at least one burger, one snack and one drink
 					if ((item1.getClass() == Snack.class) && (item2.getClass() == Drink.class)
 							&& (item3.getClass() == Burger.class)) {
 						Snack snack = (Snack) item1;
 						Drink drink = (Drink) item2;
+						// Determine if size of snack and drink are same
 						if (snack.getSize() == drink.getSize()) {
 							MessagesCLI.MISSED_COMBO.printMessage();
 						}
@@ -201,6 +203,73 @@ public class BurgerShop {
 				}
 			}
 		}
+
+		// Confirm order, empty cart and print estimated waiting time
+		int waitingTimeMins = 0;
+		int waitingTimeSecs = 0;
+		int numOfBurger = 0;
+		int numOfSnack = 0;
+		int numOfDrink = 0;
+
+		// Calculate waiting time
+		for (Object item : cart) {
+			// Waiting time for burger
+			if (item.getClass() == Burger.class) {
+				numOfBurger++;
+				if (numOfBurger == 1) {
+					waitingTimeSecs += 300;
+				} else {
+					waitingTimeSecs += 60;
+				}
+			}
+			// Waiting time for snack
+			else if (item.getClass() == Snack.class) {
+				numOfSnack++;
+				if (numOfSnack == 1) {
+					waitingTimeSecs += 180;
+				} else {
+					waitingTimeSecs += 30;
+				}
+			}
+			// Waiting time for drink
+			else if (item.getClass() == Drink.class) {
+				numOfDrink++;
+				if (numOfDrink == 1) {
+					waitingTimeSecs += 45;
+				} else {
+					waitingTimeSecs += 15;
+				}
+			}
+			// Waiting time for combo
+			else {
+				numOfBurger++;
+				numOfSnack++;
+				numOfDrink++;
+				if (numOfBurger == 1) {
+					waitingTimeSecs += 300;
+				} else {
+					waitingTimeSecs += 60;
+				}
+				if (numOfSnack == 1) {
+					waitingTimeSecs += 180;
+				} else {
+					waitingTimeSecs += 30;
+				}
+				if (numOfDrink == 1) {
+					waitingTimeSecs += 45;
+				} else {
+					waitingTimeSecs += 15;
+				}
+			}
+			// Total waiting time in minutes and seconds
+			waitingTimeMins = waitingTimeSecs / 60;
+			waitingTimeSecs = waitingTimeSecs % 60;
+
+			// Show cart
+			showCart();
+
+		}
+
 	}
 
 }
