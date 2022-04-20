@@ -179,6 +179,28 @@ public class BurgerShop {
 	 * 
 	 */
 	public void confirmOrder() {
-		// TODO TASK4
+
+		// Empty cart
+		if (cart.size() == 0) {
+			MessagesCLI.ORDER_INVALID_CART_EMPTY.printMessage();
+		}
+
+		// Change to combo to save money
+
+		for (Object item1 : cart) {
+			for (Object item2 : cart) {
+				for (Object item3 : cart) {
+					if ((item1.getClass() == Snack.class) && (item2.getClass() == Drink.class)
+							&& (item3.getClass() == Burger.class)) {
+						Snack snack = (Snack) item1;
+						Drink drink = (Drink) item2;
+						if (snack.getSize() == drink.getSize()) {
+							MessagesCLI.MISSED_COMBO.printMessage();
+						}
+					}
+				}
+			}
+		}
 	}
+
 }
