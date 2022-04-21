@@ -1,7 +1,6 @@
 package nz.ac.auckland.se281.a2;
 
 import nz.ac.auckland.se281.a2.cli.Menu;
-import nz.ac.auckland.se281.a2.cli.Menu.SIZE;
 
 public class Combo {
 
@@ -17,7 +16,7 @@ public class Combo {
 
 	// Constructor
 	public Combo(String nameBurger, float priceBurger, String nameSnack, float priceSnack, String nameDrink,
-			float priceDrink, SIZE size) {
+			float priceDrink, Menu.SIZE size) {
 		this.nameBurger = nameBurger;
 		this.priceBurger = priceBurger;
 		this.nameSnack = nameSnack;
@@ -69,6 +68,7 @@ public class Combo {
 	}
 
 	public String getSize() {
+		// Return size of combo
 		switch (size) {
 		case M:
 			return "M";

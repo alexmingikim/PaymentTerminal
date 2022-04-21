@@ -7,7 +7,8 @@ import nz.ac.auckland.se281.a2.cli.MessagesCLI;
 
 public class BurgerShop {
 
-	ArrayList<Object> cart = new ArrayList<Object>();
+	// Cart is an array list of type Object
+	private ArrayList<Object> cart = new ArrayList<Object>();
 
 	public BurgerShop() {
 
@@ -20,6 +21,7 @@ public class BurgerShop {
 	 * @param price
 	 */
 	public void addBurger(String name, float price) {
+		// Create burger instance and add burger to cart
 		Burger burger = new Burger(name, price);
 		cart.add(burger);
 	}
@@ -35,6 +37,7 @@ public class BurgerShop {
 	 * @param size
 	 */
 	public void addSnack(String name, float price, SIZE size) {
+		// Create snack instance and add snack to cart
 		Snack snack = new Snack(name, price, size);
 		cart.add(snack);
 	}
@@ -53,6 +56,7 @@ public class BurgerShop {
 	 * @param size
 	 */
 	public void addDrink(String name, float price, SIZE size) {
+		// Create drink instance and add drink to cart
 		Drink drink = new Drink(name, price, size);
 		cart.add(drink);
 	}
@@ -64,13 +68,21 @@ public class BurgerShop {
 	 *
 	 */
 	public void showCart() {
+		// Initialise number of items in cart and total price
 		int count = 0;
 		float total = 0;
+
+		// Empty cart
+		if (cart.size() == 0) {
+			MessagesCLI.CART_EMPTY.printMessage();
+			return;
+		}
 
 		for (Object object : cart) {
 			// Show Snack
 			if (object.getClass() == Snack.class) {
 				Snack snack = (Snack) object;
+				// Print out: order within cart, name, size and price
 				System.out.println(count + " - " + snack.getName() + " (" + snack.getSize() + ")" + ": $"
 						+ String.format("%.02f", snack.getPrice()));
 			}
@@ -92,29 +104,25 @@ public class BurgerShop {
 				System.out.println(count + " - COMBO : (" + combo.getNameBurger() + ", " + combo.getNameSnack() + " ("
 						+ combo.getSize() + "), " + combo.getNameDrink() + " (" + combo.getSize() + ")): $"
 						+ String.format("%.02f", combo.getComboPrice()));
-			} else {
-				System.out.println("Error!");
 			}
 			count++;
 
 			// Calculate total price
+
+			// Burger, snack or drink
 			if (object instanceof Item) {
 				Item item = (Item) object;
 				total += item.getPrice();
-			} else if (object.getClass() == Combo.class) {
+			}
+			// Combo
+			else if (object.getClass() == Combo.class) {
 				Combo combo = (Combo) object;
 				total += combo.getComboPrice();
 			}
 		}
 
-		// Empty cart
-		if (count == 0) {
-			MessagesCLI.CART_EMPTY.printMessage();
-		}
-
-		// Display total
+		// Apply discount if total is $100 or more, then display total
 		if (total >= 100) {
-			// Apply discount
 			MessagesCLI.DISCOUNT.printMessage();
 			total = (float) (total * 0.75);
 			System.out.println("Total: $" + String.format("%.02f", total));
@@ -141,6 +149,7 @@ public class BurgerShop {
 	 */
 	public void addCombo(String nameBurger, float priceBurger, String nameSnack, float priceSnack, String nameDrink,
 			float priceDrink, SIZE size) {
+		// Create combo instance and add combo to cart
 		Combo combo = new Combo(nameBurger, priceBurger, nameSnack, priceSnack, nameDrink, priceDrink, size);
 		cart.add(combo);
 	}
@@ -170,6 +179,8 @@ public class BurgerShop {
 	 * removes all elements in the cart
 	 */
 	public void clearCart() {
+
+		// Clear cart
 		cart.removeAll(cart);
 	}
 
@@ -183,6 +194,7 @@ public class BurgerShop {
 		// Empty cart
 		if (cart.size() == 0) {
 			MessagesCLI.ORDER_INVALID_CART_EMPTY.printMessage();
+			return;
 		}
 
 		// Change to combo to save money
@@ -195,7 +207,7 @@ public class BurgerShop {
 							&& (item3.getClass() == Burger.class)) {
 						Snack snack = (Snack) item1;
 						Drink drink = (Drink) item2;
-						// Determine if size of snack and drink are same
+						// If size of snack and drink are same, print missed combo
 						if (snack.getSize() == drink.getSize()) {
 							MessagesCLI.MISSED_COMBO.printMessage();
 							return;
@@ -206,6 +218,8 @@ public class BurgerShop {
 		}
 
 		// Confirm order, empty cart and print estimated waiting time
+
+		// Initialise waiting time and number of burger, snack and drink
 		int waitingTimeHours = 0;
 		int waitingTimeMins = 0;
 		int waitingTimeSecs = 0;
@@ -215,6 +229,7 @@ public class BurgerShop {
 
 		// Calculate waiting time
 		for (Object item : cart) {
+
 			// Waiting time for burger
 			if (item.getClass() == Burger.class) {
 				numOfBurger++;
@@ -242,7 +257,7 @@ public class BurgerShop {
 					waitingTimeSecs += 15;
 				}
 			}
-			// Waiting time for combo
+			// Waiting time for combo (contains each one of: burger, snack and drink)
 			else {
 				numOfBurger++;
 				numOfSnack++;
@@ -264,7 +279,8 @@ public class BurgerShop {
 				}
 			}
 		}
-		// Total waiting time in minutes and seconds
+
+		// Total waiting time in hours, minutes and seconds
 		// code adapted from https://stackoverflow.com/a/6118983
 		waitingTimeHours = waitingTimeSecs / 3600;
 		waitingTimeMins = (waitingTimeSecs % 3600) / 60;
@@ -273,12 +289,12 @@ public class BurgerShop {
 		// Show cart
 		showCart();
 
+		// Clear cart
+		clearCart();
+
 		// Print waiting time
 		System.out.println(MessagesCLI.ESTIMATE_WAITING_TIME.getMessage() + waitingTimeHours + " hours "
 				+ waitingTimeMins + " minutes " + waitingTimeSecs + " seconds");
-
-		// Clear cart
-		clearCart();
 
 	}
 

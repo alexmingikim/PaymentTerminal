@@ -27,6 +27,7 @@ public class Snack extends Item {
 
 	// Getters
 	public String getSize() {
+		// Return size of snack
 		switch (size) {
 		case M:
 			return "M";
